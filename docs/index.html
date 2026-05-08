@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Product Passport - Remanufactured Variable Nozzle Turbine (VNT) Turbocharger</title>
+    <style>
+        /* ===== CSS VARIABLES & RESET ===== */
+        :root {
+            --primary: #1a3a5c;
+            --accent: #e8732a;
+            --success: #2e7d32;
+            --warning: #f57c00;
+            --info: #1565c0;
+            --purple: #6a1b9a;
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e6ed;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --radius: 8px;
+            --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .header-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .tracking-id {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .header-meta-item strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .qr-section {
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .qr-section img {
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px;
+            background: white;
+        }
+
+        .qr-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        /* ===== TAB NAVIGATION (Pure CSS) ===== */
+        .tabs-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .tab-inputs {
+            display: none;
+        }
+
+        .tab-nav {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-nav label {
+            flex: 1;
+            padding: 16px 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .tab-nav label:hover {
+            color: var(--primary);
+            background: var(--bg);
+        }
+
+        /* Tab active states */
+        #tab1:checked~.tab-nav label[for="tab1"],
+        #tab2:checked~.tab-nav label[for="tab2"],
+        #tab3:checked~.tab-nav label[for="tab3"],
+        #tab4:checked~.tab-nav label[for="tab4"] {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+            background: var(--bg);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 32px;
+        }
+
+        #tab1:checked~.tab-content[data-tab="1"],
+        #tab2:checked~.tab-content[data-tab="2"],
+        #tab3:checked~.tab-content[data-tab="3"],
+        #tab4:checked~.tab-content[data-tab="4"] {
+            display: block;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .icon {
+            font-size: 20px;
+        }
+
+        /* ===== GRID LAYOUTS ===== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .three-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+
+            .two-col,
+            .three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+            }
+
+            .qr-section {
+                align-self: center;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+
+        /* ===== DATA TABLES ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--bg);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+        }
+
+        .data-table td {
+            font-size: 14px;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table .label {
+            font-weight: 600;
+            color: var(--text-light);
+            width: 40%;
+        }
+
+        /* ===== DISPOSITION CHIPS ===== */
+        .chip {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .chip-reused {
+            background: var(--success);
+        }
+
+        .chip-reconditioned {
+            background: var(--warning);
+        }
+
+        .chip-replaced {
+            background: var(--info);
+        }
+
+        .chip-replaced-upgraded {
+            background: var(--purple);
+        }
+
+        /* ===== RESULT BADGES ===== */
+        .badge-pass {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-fail {
+            display: inline-block;
+            background: #d32f2f;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== ACCORDION ===== */
+        .accordion {
+            margin-top: 16px;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background: var(--bg);
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background: #e8edf2;
+        }
+
+        .accordion-header .arrow {
+            transition: transform 0.3s;
+            font-size: 12px;
+        }
+
+        .accordion-item.open .accordion-header .arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-body {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-body {
+            padding: 20px;
+            max-height: 500px;
+        }
+
+        /* ===== SUSTAINABILITY VISUALS ===== */
+        .sustainability-hero {
+            text-align: center;
+            padding: 32px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f5f7fa 100%);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+
+        .sustainability-hero .big-number {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--success);
+            line-height: 1;
+        }
+
+        .sustainability-hero .big-label {
+            font-size: 18px;
+            color: var(--text);
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .sustainability-hero .big-sublabel {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            margin: 24px 0;
+        }
+
+        .bar-row {
+            margin-bottom: 16px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .bar-track {
+            height: 32px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            transition: width 0.8s ease;
+        }
+
+        .bar-new {
+            background: #78909c;
+            width: 100%;
+        }
+
+        .bar-reman {
+            background: var(--success);
+        }
+
+        /* Donut Chart */
+        .donut-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .donut-chart {
+            width: 180px;
+            height: 180px;
+            position: relative;
+        }
+
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center .number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .donut-center .label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        /* ===== WARRANTY & INFO CARDS ===== */
+        .info-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list .bullet {
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .eu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .core-credit {
+            background: linear-gradient(135deg, #e8732a 0%, #f57c00 100%);
+            color: white;
+            padding: 16px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .core-credit .amount {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .core-credit .label {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .footer-meta {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .footer-notice {
+            font-size: 12px;
+            color: var(--text-light);
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .json-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            margin: 16px 0;
+            transition: all 0.2s;
+        }
+
+        .json-toggle:hover {
+            background: var(--bg);
+        }
+
+        .json-content {
+            display: none;
+            text-align: left;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 12px;
+        }
+
+        .json-content pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .sustainability-hero .big-number {
+                font-size: 48px;
+            }
+
+            .three-col {
+                grid-template-columns: 1fr;
+            }
+
+            .donut-container {
+                flex-direction: column;
+            }
+
+            .tab-nav label {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="header-content">
+                <span class="header-badge">⚙️ Remanufactured</span>
+                <h1>Remanufactured Variable Nozzle Turbine (VNT) Turbocharger</h1>
+                <div class="tracking-id">Tracking ID: <strong>TRB-2024-00147</strong></div>
+                <div class="header-meta">
+                    <div class="header-meta-item">
+                        <span>📅 Issued:</span>
+                        <strong>2025-06-12</strong>
+                    </div>
+                    <div class="header-meta-item">
+                        <span>🏭 TurboReman Ltd</span>
+                    </div>
+                    <div class="header-meta-item">
+                        <span>📍 Birmingham, UK</span>
+                    </div>
+                </div>
+            </div>
+            <div class="qr-section">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhIAAAISAQAAAACxRhsSAAAFyUlEQVR4nO1da46kOAy2U0j9k5LmAH0U6gZ7pNYcaW4AR+kDtAQ/SwJ5ZTsJpKZqVjvAimG/T61qHsECYzl+xbDQWnRhNQki0CgBfpQAP0qAHyXAjxLgRwnwowT4UQL8ODI/OKIivtmBofLTfBuY+Wa7tpWPGW4HfJZ1CCuvV4DGbvxoRNETSau73XVi6jgKK1F9Z+reR5Lv14mlpYsNTy4Y3ksJ8GN7flTx/3Alan4QMdVfFVHd61avEkskNHwTbj7fFrEBJrqMG95HAI0C4Mev+SGuLD8rEvlkJqpHYn6/69adqel13v8HGr8D0CgBfpTIU3sE2x/Rhai7XUZ2S3V4E+74InbqJ4CnJcCP/fhRi5hpakaqgT9EFaiaoU0/6ZYp1TxO0rSP9/IAyOlu/OjMfb/apH5RwdSDgxqk7vlfdOtNqPm0kMDk7v7297EKYd3lBtA4Jj9ISpCLqBqp5vmbPrVxbZ22HtAe5VkCaJyWH7QUOFIXKs37tuubLrv16Fsivalc/YGcHvjdhtPRYJ3yyX37q6lSE0IVTLGoqQqrxgD0BPO7maYT5v0/4d2eSp+2utn0WYuau+QTfVSbLra+26c4P/Tpkd9tOJ2ckntKdZLEJwapyW7ajYoWcnrodxtORINmxUhRWZr3NLoZGs1VVa9mlea4lIst9OmR3204IY2BWVrNOLlStZBUfWe3RT0LVd81tT8x30xE+8M+yxqEVVc7QGPXOD95Bn8wd0nFcXhLutOgSanbHFM1yd78PtYgrLraARpHzpsK0VRJ99edxXaoHqvo0deaLR2+qZKdWLqbnyfRAhVu2iM9SwCN0/v7dTmV19lncqt09IK/eXC8AvHTA7/bcEY/aky5J5dYc/pTENXSU+ZWtWa9+g/k9ODvNpyQxlCRfNeUvdWcqAuVKqaL2hTN/scQayr5P96zrEFYdbUDNHaM81/0X5re5wxqjOnrCVegMWAVdSzm/SeAnO5on45x301Oy+XPK0uyiObYP+L8rwE53VWf0kIwFxH/bK56sH+uoYI+fQHI6Y78mDianMm3T1WnlS/rs7UoMRCgx9yO3f4+ViCsuTgCNI7Jj2pelcdeuddOuqux0qtuuG+vatQTVRpJzUbCdvcRQKMA+PG6XsoQPSWrQ8nimKNRDyFWxE+fATK2a/xUPH6/cPX1vFmlKbCaSlBsMOqlXgByumv9qZgWXdTw+Y9p0Vy7n0Q0FvUjLvUEkNP9+kzUXxVTLcTND8/lV0JDNeqP9pmYNPFvXSg03V+b+2/FAFvdRwCNAuDH03UnHzbRf5pHr8V9urxEC/kWPSWsl09jvScGXXRqPwsa6xBAowD48YCl8VmnH7cAsjO1nPdtfK6ixrz/BJCxHdedUMyRzmVRywUpc2aqCEnBPn0GyOl+/n6/XJpH7j2ljieLsL+PS4oW+vQpIKc7+lGj95UyiNXu25YWRnMjVkX9pY6T9vJpxT2qDe8jgEYB8OMBcYJPeXtx4zMH+3PVaRo31wHAPn0ByNi+66NoyE2mLKv/LuJefqw11a5S19iMSgT5/VeAnO7cZ0KKzjxz2f6ygH8sGvrA338CyOnO6056O7JsHuVj5gq/2d+PRgL6oP0MyOl/0a9P5nT/cs1UMlzzEORNXwFyum/8lNLik0UHn4U4piFplV+2GfBeSoAf+3/vhNVTktbaSRhUYvXLJ/zhnn9umeLL+ja+j1UI6y43gMax+THEr0FJrkSN6029bbR+jcdEVAXYjkWPauv7WIOw6moHaPwp/BjexFrz881r+NKyPl0h7aWnZql+v2qpyo738e8BGv+f7504OrakVKVrUabKu/LrWKbauvWYfTpVB3uWABqn5QctGu6KJ+9jJ4nHxdHZmUqfOkE+6uDvNpzZ32/zVvyMZO6Anqqp5oY+8PcP/W7DiWjw4luQv4nuKM8SQKMA+FEC/CgBfpQAP0qAHyXAjxLgRwnwo8QW/PgbYxibs5yjn+gAAAAASUVORK5CYII=" alt="QR Code - Scan to access digital passport">
+                <div class="qr-label">Scan for digital passport</div>
+            </div>
+        </header>
+
+        <!-- ===== TABS ===== -->
+        <div class="tabs-container">
+            <input type="radio" name="tabs" id="tab1" class="tab-inputs" checked>
+            <input type="radio" name="tabs" id="tab2" class="tab-inputs">
+            <input type="radio" name="tabs" id="tab3" class="tab-inputs">
+            <input type="radio" name="tabs" id="tab4" class="tab-inputs">
+
+            <div class="tab-nav">
+                <label for="tab1">🔍 Identity & Provenance</label>
+                <label for="tab2">⚙️ Remanufacturing</label>
+                <label for="tab3">🌱 Sustainability</label>
+                <label for="tab4">📋 Lifecycle</label>
+            </div>
+
+            <!-- Tab 1: Identity & Provenance -->
+            <div class="tab-content" data-tab="1">
+                <div class="two-col">
+                    <!-- Original Core Card -->
+                    <div class="card">
+                        <div class="card-title">
+                            <span class="icon">🔧</span>
+                            Original Core Information
+                        </div>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">OEM Part Number</td>
+                                <td><strong>49335-00850</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="label">OEM Manufacturer</td>
+                                <td>Mitsubishi Turbocharger &amp; Engine Europe</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Serial Number</td>
+                                <td><code>VW-CRF-2019-004821</code></td>
+                            </tr>
+                        </table>
+
+                        <h4 style="margin: 20px 0 12px; color: var(--primary); font-size: 14px;">Vehicle Fitment</h4>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Make / Model</td>
+                                <td>Volkswagen Crafter</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Engine Code</td>
+                                <td><strong>CKTB</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Year Range</td>
+                                <td>2017–2023</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Displacement</td>
+                                <td>1968 cc</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Power Output</td>
+                                <td>103 kW</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Remanufactured Unit Card -->
+                    <div class="card">
+                        <div class="card-title">
+                            <span class="icon">✨</span>
+                            Remanufactured Unit
+                        </div>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Product Name</td>
+                                <td><strong>Remanufactured Variable Nozzle Turbine (VNT) Turbocharger</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tracking ID</td>
+                                <td><code>TRB-2024-00147</code></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Remanufactured Date</td>
+                                <td>2025-06-10</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Category</td>
+                                <td>Turbocharger</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Data Carrier</td>
+                                <td>Laser-etched QR code on compressor housing</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Remanufacturer Card -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🏭</span>
+                        Remanufacturer Details
+                    </div>
+                    <div class="two-col">
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Company</td>
+                                <td><strong>TurboReman Ltd</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Economic Operator ID (EOID)</td>
+                                <td><code>GB-EOID-2024-TRL-00421</code></td>
+                            </tr>
+                        </table>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Facility ID</td>
+                                <td>FAC-BHAM-001</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Location</td>
+                                <td>Birmingham, UK (GB)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Remanufacturing Operations -->
+            <div class="tab-content" data-tab="2">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">📋</span>
+                        Component Disposition
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Sub-Assembly</th>
+                                <th>Status</th>
+                                <th>Material</th>
+                                <th>Action Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            
+                            <tr>
+                                <td><strong>Turbine Housing (Cast Iron)</strong></td>
+                                <td><span class="chip chip-reused">Reused</span></td>
+                                <td>Cast Iron GJL-250</td>
+                                <td style="font-size: 13px;">Ultrasonically cleaned, crack-tested, and surface-restored. All mating faces measured to OEM tolerance ±0.02mm.</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td><strong>Compressor Cover (Aluminium)</strong></td>
+                                <td><span class="chip chip-reconditioned">Reconditioned</span></td>
+                                <td>Aluminium Alloy A380</td>
+                                <td style="font-size: 13px;">CNC machined to restore bore geometry. Anodised finish reapplied.</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td><strong>Compressor Wheel</strong></td>
+                                <td><span class="chip chip-replaced-upgraded">Replaced — Upgraded</span></td>
+                                <td>2618 Forged Aluminium</td>
+                                <td style="font-size: 13px;">Replaced with billet 2618-forged aluminium wheel. +7% flow improvement over OEM.</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td><strong>CHRA (Centre Housing Rotating Assembly)</strong></td>
+                                <td><span class="chip chip-replaced">Replaced</span></td>
+                                <td>Steel / Bronze alloy bearings</td>
+                                <td style="font-size: 13px;">Full new CHRA installed. New journal bearings, thrust collar, oil deflector, and piston ring seals.</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td><strong>VNT Nozzle Ring &amp; Actuator</strong></td>
+                                <td><span class="chip chip-reconditioned">Reconditioned</span></td>
+                                <td>Stainless Steel</td>
+                                <td style="font-size: 13px;">Vanes de-carbonised, freedom-of-movement restored. Actuator rod re-calibrated to OEM displacement spec.</td>
+                            </tr>
+                            
+                            
+                            <tr>
+                                <td><strong>Turbine Shaft &amp; Wheel</strong></td>
+                                <td><span class="chip chip-replaced">Replaced</span></td>
+                                <td>Inconel 713</td>
+                                <td style="font-size: 13px;">New Inconel shaft-and-wheel assembly. Old shaft measured beyond wear limit (journal diameter &lt; 11.94mm).</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🧪</span>
+                        Testing & Calibration Records
+                    </div>
+                    <div class="accordion">
+                        <!-- VSR Balancing -->
+                        <div class="accordion-item open">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <span>⚖️ VSR Balancing Test</span>
+                                <span class="badge-pass">PASS</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <table class="data-table">
+                                    <tr>
+                                        <td class="label">Test Standard</td>
+                                        <td>ISO 21940-11 Residual Unbalance</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Test Speed</td>
+                                        <td><strong>180,000 RPM</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Balance Grade</td>
+                                        <td>G0.4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Residual Unbalance</td>
+                                        <td>0.12 g·mm
+                                            (threshold: 0.25
+                                            g·mm)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Test Date</td>
+                                        <td>2025-06-10</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Machine ID</td>
+                                        <td><code>VSR-HOFMANN-03</code></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Actuator Calibration -->
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <span>🔧 Actuator Calibration</span>
+                                <span class="badge-pass">PASS</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <table class="data-table">
+                                    <tr>
+                                        <td class="label">Type</td>
+                                        <td>Pneumatic Wastegate / VNT</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Set Pressure</td>
+                                        <td><strong>780
+                                                mbar</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Rod Travel</td>
+                                        <td>1.85 mm (OEM
+                                            spec: 1.8–1.9 mm)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Calibrated By</td>
+                                        <td>Technician ID: T-047</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Leak Test -->
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <span>💨 Leak Test</span>
+                                <span class="badge-pass">PASS</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="accordion-body">
+                                <table class="data-table">
+                                    <tr>
+                                        <td class="label">Test Pressure</td>
+                                        <td><strong>1.5
+                                                bar</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Hold Time</td>
+                                        <td>30 seconds</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Sustainability -->
+            <div class="tab-content" data-tab="3">
+                <div class="sustainability-hero">
+                    <div class="big-number">80.1%</div>
+                    <div class="big-label">less CO₂ than new</div>
+                    <div class="big-sublabel">Saving 37.8 kg CO₂e per unit</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">📊</span>
+                        Global Warming Potential Comparison
+                    </div>
+                    <div class="bar-chart">
+                        
+                        <div class="bar-row">
+                            <div class="bar-label">
+                                <span>New Unit (Benchmark)</span>
+                                <strong>47.2 kg CO₂e</strong>
+                            </div>
+                            <div class="bar-track">
+                                <div class="bar-fill bar-new" style="width: 100%;">47.2 kg CO₂e</div>
+                            </div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="bar-label">
+                                <span>Remanufactured Unit</span>
+                                <strong>9.4 kg CO₂e</strong>
+                            </div>
+                            <div class="bar-track">
+                                
+                                <div class="bar-fill bar-reman" style="width: 19.9%;">9.4 kg CO₂e</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-light); margin-top: 16px;">
+                        <strong>Methodology:</strong> Based on ISO 14044 LCA boundary; cradle-to-gate. New unit benchmark: IHS Markit 2023 turbocharger LCA dataset.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">🔄</span>
+                        Material Circularity
+                    </div>
+                    <div class="donut-container">
+                        <div class="donut-chart">
+                            
+                            
+                            
+                            
+                            
+                            <svg width="180" height="180" viewBox="0 0 180 180">
+                                <!-- Background circle -->
+                                <circle cx="90" cy="90" r="84.0" fill="none" stroke="#e0e6ed"
+                                    stroke-width="12" />
+                                <!-- Progress circle -->
+                                <circle cx="90" cy="90" r="84.0" fill="none" stroke="#2e7d32"
+                                    stroke-width="12" stroke-dasharray="527.78712"
+                                    stroke-dashoffset="158.336136" stroke-linecap="round" />
+                            </svg>
+                            <div class="donut-center">
+                                <div class="number">70.0%</div>
+                                <div class="label">Circular</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #2e7d32;"></div>
+                                <span>Reused/Reconditioned: <strong>2.94
+                                        kg</strong></span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #1565c0;"></div>
+                                <span>New Material: <strong>1.26
+                                        kg</strong></span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #e0e6ed;"></div>
+                                <span>Total Weight: <strong>4.2
+                                        kg</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">⚡</span>
+                        Energy Consumption
+                    </div>
+                    <div class="two-col">
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Energy Used</td>
+                                <td><strong>3.8 kWh</strong></td>
+                            </tr>
+                        </table>
+                        <table class="data-table">
+                            <tr>
+                                <td class="label">Energy Source</td>
+                                <td>Grid + 40% on-site solar</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Commercial & Lifecycle -->
+            <div class="tab-content" data-tab="4">
+                <div class="three-col">
+                    <!-- Warranty Card -->
+                    <div class="info-card">
+                        <h3>🛡️ Warranty Coverage</h3>
+                        <ul class="info-list">
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Duration:</strong> 24 months</span>
+                            </li>
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Mileage Limit:</strong> 100,000
+                                    km</span>
+                            </li>
+                            <li>
+                                <span class="bullet">●</span>
+                                <span style="font-size: 13px;">Warranty void if oil supply pipe not replaced at installation. Requires pre-lubrication on first start. Valid only with installation record.</span>
+                            </li>
+                        </ul>
+                        <div class="eu-badge">
+                            🇪🇺 EU 2023/1542 — Remanufactured goods warranty parity
+                        </div>
+                    </div>
+
+                    <!-- Installation Guide Card -->
+                    <div class="info-card">
+                        <h3>🔧 Installation Guidance</h3>
+                        <ul class="info-list">
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Oil Priming:</strong> Fill centre housing with clean engine oil before installation. Crank engine without starting for 10 seconds to prime oil feed.</span>
+                            </li>
+                            <li>
+                                <span class="bullet">⚠️</span>
+                                <span style="font-size: 13px; color: #d32f2f;"><strong>MANDATORY: Replace oil feed pipe and banjo bolt. Do not reuse old pipe.</strong></span>
+                            </li>
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Run-in:</strong> Idle for 3 minutes on first start. Do not rev above 2,500 RPM for first 50km.</span>
+                            </li>
+                        </ul>
+
+                        <h4 style="margin: 16px 0 8px; font-size: 13px; color: var(--primary);">Torque Specifications
+                        </h4>
+                        <table class="data-table" style="font-size: 13px;">
+                            <thead>
+                                <tr>
+                                    <th>Fastener</th>
+                                    <th>Torque</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    <td>Oil feed banjo bolt</td>
+                                    <td><strong>22 Nm</strong></td>
+                                    <td style="font-size: 12px;">New copper washers only</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Turbine housing V-clamp</td>
+                                    <td><strong>10 Nm</strong></td>
+                                    <td style="font-size: 12px;">Tighten evenly in star pattern</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>Turbo mounting studs (M8)</td>
+                                    <td><strong>28 Nm</strong></td>
+                                    <td style="font-size: 12px;">Apply anti-seize compound</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                        <a href="https://yourcompany.github.io/manuals/TRB-VW-CRAFTER-CKTB-v2.pdf"
+                            style="display: inline-block; margin-top: 12px; color: var(--accent); text-decoration: none; font-weight: 600; font-size: 13px;">
+                            📄 View Full Technical Manual →
+                        </a>
+                    </div>
+
+                    <!-- End of Life Card -->
+                    <div class="info-card">
+                        <h3>♻️ End of Life</h3>
+                        <ul class="info-list">
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Takeback Scheme:</strong><br>TurboReman Core Return Programme</span>
+                            </li>
+                            <li>
+                                <span class="bullet">●</span>
+                                <span style="font-size: 13px;">Contact returns@turboreman.co.uk with your unit serial number. A pre-paid collection label will be issued within 48 hours. Core must be drained of oil and sealed in original packaging.</span>
+                            </li>
+                            <li>
+                                <span class="bullet">●</span>
+                                <span><strong>Hazardous Materials:</strong><br>Engine oil residues — drain prior to return. Not WEEE-classified.</span>
+                            </li>
+                        </ul>
+                        <div class="core-credit">
+                            <div class="label">Core Return Credit</div>
+                            <div class="amount">£45.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+            <div class="footer-meta">
+                DPP Version 1.0 • Issued 2025-06-12 • ID: <code>01KR40F8RBEVSVY1H2FZ8D6P29</code>
+            </div>
+            <button class="json-toggle" onclick="toggleJson()">View Raw Data (JSON)</button>
+            <div class="json-content" id="jsonContent">
+                <pre>{
+  &#34;dpp_id&#34;: &#34;01KR40F8RBEVSVY1H2FZ8D6P29&#34;,
+  &#34;dpp_version&#34;: &#34;1.0&#34;,
+  &#34;issued_date&#34;: &#34;2025-06-12&#34;,
+  &#34;passport_url&#34;: &#34;https://abdullahigoni-droid.github.io/DPP/01KR40F8RBEVSVY1H2FZ8D6P29/&#34;,
+  &#34;original_core&#34;: {
+    &#34;oem_part_number&#34;: &#34;49335-00850&#34;,
+    &#34;oem_manufacturer&#34;: &#34;Mitsubishi Turbocharger &amp; Engine Europe&#34;,
+    &#34;serial_number&#34;: &#34;VW-CRF-2019-004821&#34;,
+    &#34;vehicle_fitment&#34;: {
+      &#34;make&#34;: &#34;Volkswagen&#34;,
+      &#34;model&#34;: &#34;Crafter&#34;,
+      &#34;engine_code&#34;: &#34;CKTB&#34;,
+      &#34;year_range&#34;: &#34;2017–2023&#34;,
+      &#34;displacement_cc&#34;: 1968,
+      &#34;power_kw&#34;: 103
+    }
+  },
+  &#34;remanufacturer&#34;: {
+    &#34;company_name&#34;: &#34;TurboReman Ltd&#34;,
+    &#34;eoid&#34;: &#34;GB-EOID-2024-TRL-00421&#34;,
+    &#34;facility_id&#34;: &#34;FAC-BHAM-001&#34;,
+    &#34;facility_location&#34;: &#34;Birmingham, UK&#34;,
+    &#34;facility_country_code&#34;: &#34;GB&#34;
+  },
+  &#34;remanufactured_unit&#34;: {
+    &#34;tracking_id&#34;: &#34;TRB-2024-00147&#34;,
+    &#34;data_carrier&#34;: &#34;Laser-etched QR code on compressor housing&#34;,
+    &#34;reman_date&#34;: &#34;2025-06-10&#34;,
+    &#34;product_name&#34;: &#34;Remanufactured Variable Nozzle Turbine (VNT) Turbocharger&#34;,
+    &#34;product_category&#34;: &#34;Turbocharger&#34;
+  },
+  &#34;component_disposition&#34;: [
+    {
+      &#34;sub_assembly&#34;: &#34;Turbine Housing (Cast Iron)&#34;,
+      &#34;disposition&#34;: &#34;Reused&#34;,
+      &#34;action_detail&#34;: &#34;Ultrasonically cleaned, crack-tested, and surface-restored. All mating faces measured to OEM tolerance ±0.02mm.&#34;,
+      &#34;material&#34;: &#34;Cast Iron GJL-250&#34;
+    },
+    {
+      &#34;sub_assembly&#34;: &#34;Compressor Cover (Aluminium)&#34;,
+      &#34;disposition&#34;: &#34;Reconditioned&#34;,
+      &#34;action_detail&#34;: &#34;CNC machined to restore bore geometry. Anodised finish reapplied.&#34;,
+      &#34;material&#34;: &#34;Aluminium Alloy A380&#34;
+    },
+    {
+      &#34;sub_assembly&#34;: &#34;Compressor Wheel&#34;,
+      &#34;disposition&#34;: &#34;Replaced — Upgraded&#34;,
+      &#34;action_detail&#34;: &#34;Replaced with billet 2618-forged aluminium wheel. +7% flow improvement over OEM.&#34;,
+      &#34;material&#34;: &#34;2618 Forged Aluminium&#34;
+    },
+    {
+      &#34;sub_assembly&#34;: &#34;CHRA (Centre Housing Rotating Assembly)&#34;,
+      &#34;disposition&#34;: &#34;Replaced&#34;,
+      &#34;action_detail&#34;: &#34;Full new CHRA installed. New journal bearings, thrust collar, oil deflector, and piston ring seals.&#34;,
+      &#34;material&#34;: &#34;Steel / Bronze alloy bearings&#34;
+    },
+    {
+      &#34;sub_assembly&#34;: &#34;VNT Nozzle Ring &amp; Actuator&#34;,
+      &#34;disposition&#34;: &#34;Reconditioned&#34;,
+      &#34;action_detail&#34;: &#34;Vanes de-carbonised, freedom-of-movement restored. Actuator rod re-calibrated to OEM displacement spec.&#34;,
+      &#34;material&#34;: &#34;Stainless Steel&#34;
+    },
+    {
+      &#34;sub_assembly&#34;: &#34;Turbine Shaft &amp; Wheel&#34;,
+      &#34;disposition&#34;: &#34;Replaced&#34;,
+      &#34;action_detail&#34;: &#34;New Inconel shaft-and-wheel assembly. Old shaft measured beyond wear limit (journal diameter &lt; 11.94mm).&#34;,
+      &#34;material&#34;: &#34;Inconel 713&#34;
+    }
+  ],
+  &#34;testing_calibration&#34;: {
+    &#34;vsr_balancing&#34;: {
+      &#34;test_standard&#34;: &#34;ISO 21940-11 Residual Unbalance&#34;,
+      &#34;test_speed_rpm&#34;: 180000,
+      &#34;balance_grade&#34;: &#34;G0.4&#34;,
+      &#34;residual_unbalance_gmm&#34;: 0.12,
+      &#34;pass_threshold_gmm&#34;: 0.25,
+      &#34;result&#34;: &#34;PASS&#34;,
+      &#34;test_date&#34;: &#34;2025-06-10&#34;,
+      &#34;machine_id&#34;: &#34;VSR-HOFMANN-03&#34;
+    },
+    &#34;actuator_calibration&#34;: {
+      &#34;type&#34;: &#34;Pneumatic Wastegate / VNT&#34;,
+      &#34;set_pressure_mbar&#34;: 780,
+      &#34;rod_travel_mm&#34;: 1.85,
+      &#34;oem_spec_min_mm&#34;: 1.8,
+      &#34;oem_spec_max_mm&#34;: 1.9,
+      &#34;result&#34;: &#34;PASS&#34;,
+      &#34;calibrated_by&#34;: &#34;Technician ID: T-047&#34;
+    },
+    &#34;leak_test&#34;: {
+      &#34;test_pressure_bar&#34;: 1.5,
+      &#34;hold_time_seconds&#34;: 30,
+      &#34;result&#34;: &#34;PASS&#34;
+    }
+  },
+  &#34;sustainability&#34;: {
+    &#34;gwp_new_unit_kg_co2e&#34;: 47.2,
+    &#34;gwp_remanufactured_kg_co2e&#34;: 9.4,
+    &#34;gwp_saving_kg_co2e&#34;: 37.8,
+    &#34;gwp_saving_percent&#34;: 80.1,
+    &#34;gwp_methodology&#34;: &#34;Based on ISO 14044 LCA boundary; cradle-to-gate. New unit benchmark: IHS Markit 2023 turbocharger LCA dataset.&#34;,
+    &#34;material_circularity&#34;: {
+      &#34;total_unit_weight_kg&#34;: 4.2,
+      &#34;reused_reconditioned_weight_kg&#34;: 2.94,
+      &#34;new_material_weight_kg&#34;: 1.26,
+      &#34;circularity_percent&#34;: 70.0
+    },
+    &#34;energy_used_kwh&#34;: 3.8,
+    &#34;energy_source&#34;: &#34;Grid + 40% on-site solar&#34;
+  },
+  &#34;warranty&#34;: {
+    &#34;duration_months&#34;: 24,
+    &#34;mileage_limit_km&#34;: 100000,
+    &#34;conditions&#34;: &#34;Warranty void if oil supply pipe not replaced at installation. Requires pre-lubrication on first start. Valid only with installation record.&#34;,
+    &#34;eu_regulation_reference&#34;: &#34;EU 2023/1542 — Remanufactured goods warranty parity&#34;
+  },
+  &#34;installation_guidance&#34;: {
+    &#34;oil_priming&#34;: &#34;Fill centre housing with clean engine oil before installation. Crank engine without starting for 10 seconds to prime oil feed.&#34;,
+    &#34;oil_feed_pipe&#34;: &#34;MANDATORY: Replace oil feed pipe and banjo bolt. Do not reuse old pipe.&#34;,
+    &#34;torque_specs&#34;: [
+      {
+        &#34;fastener&#34;: &#34;Oil feed banjo bolt&#34;,
+        &#34;torque_nm&#34;: 22,
+        &#34;note&#34;: &#34;New copper washers only&#34;
+      },
+      {
+        &#34;fastener&#34;: &#34;Turbine housing V-clamp&#34;,
+        &#34;torque_nm&#34;: 10,
+        &#34;note&#34;: &#34;Tighten evenly in star pattern&#34;
+      },
+      {
+        &#34;fastener&#34;: &#34;Turbo mounting studs (M8)&#34;,
+        &#34;torque_nm&#34;: 28,
+        &#34;note&#34;: &#34;Apply anti-seize compound&#34;
+      }
+    ],
+    &#34;run_in_procedure&#34;: &#34;Idle for 3 minutes on first start. Do not rev above 2,500 RPM for first 50km.&#34;,
+    &#34;technical_manual_url&#34;: &#34;https://yourcompany.github.io/manuals/TRB-VW-CRAFTER-CKTB-v2.pdf&#34;
+  },
+  &#34;end_of_life&#34;: {
+    &#34;takeback_scheme&#34;: &#34;TurboReman Core Return Programme&#34;,
+    &#34;instructions&#34;: &#34;Contact returns@turboreman.co.uk with your unit serial number. A pre-paid collection label will be issued within 48 hours. Core must be drained of oil and sealed in original packaging.&#34;,
+    &#34;core_value_credit_gbp&#34;: 45.0,
+    &#34;hazardous_materials&#34;: &#34;Engine oil residues — drain prior to return. Not WEEE-classified.&#34;
+  }
+}</pre>
+            </div>
+            <div class="footer-notice">
+                🇪🇺 Issued in accordance with EU Ecodesign for Sustainable Products Regulation (ESPR) framework
+                principles
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Accordion toggle
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const isOpen = item.classList.contains('open');
+
+            // Close all accordions
+            document.querySelectorAll('.accordion-item').forEach(el => {
+                el.classList.remove('open');
+            });
+
+            // Open clicked one if it was closed
+            if (!isOpen) {
+                item.classList.add('open');
+            }
+        }
+
+        // JSON toggle
+        function toggleJson() {
+            const content = document.getElementById('jsonContent');
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+
+</html>
