@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environment
+venv/
+env/
+.env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Output directory (gitignored until deploy)
+output/
+
+# OS files
+.DS_Store
+Thumbs.db
