@@ -108,19 +108,17 @@ The HTML template is in `templates/dpp_template.html`. Key customization points:
 
 ### GitHub Pages (Recommended)
 
-This repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml`.
-
 1. Create or connect the GitHub repository
 2. Push the `main` branch to GitHub
-3. In repository settings, set Pages source to **GitHub Actions** if it is not already selected
-4. The workflow generates `output/` and deploys it to GitHub Pages
+3. In repository settings, set Pages source to **Deploy from a branch**
+4. Select the `main` branch and `/ (root)` folder
 
 For this repository, the live site URL will be:
 ```
 https://abdullahigoni-droid.github.io/DPP/
 ```
 
-The generator also creates a `/{DPP_ID}/` route so the embedded QR code links directly to the deployed passport.
+Commit `index.html` at the repository root for the live homepage. The generator also creates a `/{DPP_ID}/` route so the embedded QR code links directly to the deployed passport.
 
 ### Netlify / Vercel
 
