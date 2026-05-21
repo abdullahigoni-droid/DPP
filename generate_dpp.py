@@ -10,6 +10,7 @@ Usage:
 """
 
 import base64
+import mimetypes
 import io
 import json
 import os
@@ -42,9 +43,20 @@ except ImportError:
 from data.sample_turbo_dpp import DPP_DATA
 
 
-def generate_ulid() -> str:
-    """Generate a new ULID string."""
-    return str(ULID())
+def normalize_dpp_id(dpp_id: str) -> str:
+    """Use the Made2Verify-style dpp_ prefix while accepting raw ULIDs."""
+    return dpp_id if dpp_id.startswith("dpp_") else f"dpp_{dpp_id}"
+
+
+def generate_dpp_id(base_data=None) -> str:
+    """Return a deterministic DPP ID unless a caller asks for a fresh one."""
+    explicit_dpp_id = os.environ.get("DPP_ID") or (base_data or {}).get("dpp_id")
+    generate_new = os.environ.get("DPP_GENERATE_NEW", "").lower() in {"1", "true", "yes"}
+
+    if explicit_dpp_id and not generate_new:
+        return normalize_dpp_id(explicit_dpp_id)
+
+    return normalize_dpp_id(str(ULID()))
 
 
 def generate_qr_code(data: str, error_correction: int = ERROR_CORRECT_H) -> tuple:
@@ -71,6 +83,22 @@ def generate_qr_code(data: str, error_correction: int = ERROR_CORRECT_H) -> tupl
     qr_b64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
 
     return qr_b64, img
+
+
+def image_to_data_uri(image_path: str | None) -> str:
+    """Embed a local product image so generated passports stay self-contained."""
+    if not image_path:
+        return ""
+
+    path = Path(image_path)
+    if not path.exists():
+        return ""
+
+    mime_type, _ = mimetypes.guess_type(path.name)
+    mime_type = mime_type or "image/jpeg"
+    image_b64 = base64.b64encode(path.read_bytes()).decode("utf-8")
+
+    return f"data:{mime_type};base64,{image_b64}"
 
 
 def prepare_data(dpp_data: dict, dpp_id: str) -> dict:
@@ -147,6 +175,7 @@ def render_template(data: dict, qr_b64: str, template_path: str = "templates") -
     html_content = template.render(
         dpp=data,
         qr_code_b64=qr_b64,
+        product_image_data_uri=image_to_data_uri(data.get("product", {}).get("image_path")),
         dpp_json=dpp_json,
     )
 
@@ -213,10 +242,10 @@ def main():
     print("🔧 Digital Product Passport Generator")
     print("=" * 50)
 
-    # Step 1: Generate ULID
-    print("\n📋 Generating unique DPP identifier...")
-    dpp_id = generate_ulid()
-    print(f"   ULID: {dpp_id}")
+    # Step 1: Resolve DPP identifier
+    print("\n📋 Resolving unique DPP identifier...")
+    dpp_id = generate_dpp_id(DPP_DATA)
+    print(f"   DPP ID: {dpp_id}")
 
     # Step 2: Prepare data
     print("\n📊 Preparing DPP data...")

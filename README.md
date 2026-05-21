@@ -6,8 +6,9 @@ A Python-based system for generating self-contained HTML Digital Product Passpor
 
 - **Self-contained HTML**: Single file with embedded CSS, JavaScript, and data
 - **QR Code Generation**: High error-correction QR codes for laser-etched durability
-- **ULID-based IDs**: Sortable unique identifiers for each passport
-- **Four-tab Interface**: Identity, Remanufacturing, Sustainability, Lifecycle
+- **Made2Verify-style DPP IDs**: `dpp_` prefixed identifiers with stable route output
+- **Dashboard Interface**: Product overview, environmental impact, materials, journey, remanufacturing, testing, lifecycle, support, and raw JSON
+- **Embedded Product Image**: Uses the local turbocharger image so generated passports stay portable
 - **Responsive Design**: Works on desktop and mobile devices
 - **Offline Capable**: No internet connection required after generation
 - **Print-ready Labels**: Separate QR code PNG for physical labeling
@@ -22,8 +23,8 @@ dpp_mvp/
 ├── templates/
 │   └── dpp_template.html    # Jinja2 HTML template
 ├── output/                  # Generated files (gitignored)
-│   ├── dpp_TRB-2024-00147.html
-│   └── label_TRB-2024-00147.png
+│   ├── dpp_TTG-TRB-2026-00147.html
+│   └── label_TTG-TRB-2026-00147.png
 ├── requirements.txt         # Python dependencies
 ├── .gitignore              # Git ignore rules
 └── README.md               # This file
@@ -56,26 +57,28 @@ dpp_mvp/
 
 ## 📊 Data Structure
 
-The DPP data is defined in `data/sample_turbo_dpp.py` and includes:
+The DPP data is defined in `data/sample_turbo_dpp.py` and currently models a remanufactured turbocharger for The Turbo Guy. It includes:
 
-### Section 1: Identity & Provenance
+### Product Overview
 - Original core information (OEM part, serial number, vehicle fitment)
 - Remanufacturer details (company, facility, EOID)
 - Remanufactured unit tracking
 
-### Section 2: Remanufacturing Operations
+### Remanufacturing Operations
 - Component disposition (Reused, Reconditioned, Replaced, Upgraded)
 - Testing & calibration records (VSR balancing, actuator calibration, leak test)
 
-### Section 3: Sustainability
+### Sustainability & Materials
 - Global Warming Potential (GWP) comparison
 - Material circularity percentage
 - Energy consumption data
+- Material composition and traceability
 
-### Section 4: Commercial & Lifecycle
-- Warranty terms and EU regulation compliance
+### Lifecycle & Support
+- Warranty and returns guidance
 - Installation guidance with torque specifications
 - End-of-life takeback scheme
+- The Turbo Guy trade support details
 
 ## 🔧 Customization
 
@@ -87,14 +90,14 @@ Edit `data/sample_turbo_dpp.py` to change:
 - Sustainability metrics
 - Warranty terms
 
-### Changing the Passport URL
+### Changing the Passport URL or ID
 
 The default URL pattern is:
 ```
-https://yourcompany.github.io/dpp/{ULID}
+https://yourcompany.github.io/DPP/{dpp_id}/
 ```
 
-To change this, modify the `passport_url` field in `sample_turbo_dpp.py` or update the `prepare_data()` function in `generate_dpp.py`.
+To change this, modify the `passport_url` and `dpp_id` fields in `sample_turbo_dpp.py`. To force a fresh ID at generation time, set `DPP_GENERATE_NEW=1`; to override with a specific ID, set `DPP_ID`.
 
 ### Template Styling
 
@@ -139,8 +142,8 @@ from data.sample_turbo_dpp import DPP_DATA
 
 # List of variations
 units = [
-    {"tracking_id": "TRB-2024-00147", "serial": "VW-CRF-2019-004821"},
-    {"tracking_id": "TRB-2024-00148", "serial": "VW-CRF-2019-004822"},
+    {"tracking_id": "TTG-TRB-2026-00147", "serial": "TTG-VNT-2026-00147"},
+    {"tracking_id": "TTG-TRB-2026-00148", "serial": "TTG-VNT-2026-00148"},
     # ... more units
 ]
 
@@ -158,7 +161,7 @@ for unit in units:
 - **Jinja2**: HTML templating
 - **qrcode[pil]**: QR code generation with PIL support
 - **Pillow**: Image processing (required by qrcode)
-- **python-ulid**: ULID generation for unique IDs
+- **python-ulid**: Optional fresh ID generation when `DPP_GENERATE_NEW=1`
 
 ### QR Code Specifications
 
@@ -167,16 +170,14 @@ for unit in units:
 - **Border**: 4 modules
 - **Format**: PNG, 490×490 pixels
 
-### ULID Format
+### DPP ID Format
 
-ULIDs are 26-character sortable identifiers:
+DPP IDs use a `dpp_` prefix followed by a stable identifier:
 ```
-01KQYCTYN9NDPHPZWA1B0Q7BZ9
+dpp_01KTTG4PV63D5D8JB7M2VNT001
 ```
 
-Format: `TTTTTTTTTTSSSSSSSSSSSSSSSS`
-- T = Timestamp (milliseconds since Unix epoch)
-- S = Randomness (cryptographically secure)
+Set `DPP_GENERATE_NEW=1` to generate a fresh ULID-backed identifier at runtime.
 
 ## 📄 Compliance
 
@@ -203,7 +204,7 @@ MIT License — feel free to use and modify for your projects.
 
 For issues or questions:
 
-1. Check the [GitHub Issues](https://github.com/yourcompany/dpp/issues)
+1. Check the project issue tracker
 2. Review the template file for customization options
 3. Verify Python version and dependencies
 
