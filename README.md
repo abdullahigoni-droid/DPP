@@ -174,7 +174,7 @@ for unit in units:
 
 DPP IDs use a `dpp_` prefix followed by a stable identifier:
 ```
-dpp_01KTTG4PV63D5D8JB7M2VNT001
+dpp_01KS8B0BA3JABFACW0ESR17T6V
 ```
 
 Set `DPP_GENERATE_NEW=1` to generate a fresh ULID-backed identifier at runtime.

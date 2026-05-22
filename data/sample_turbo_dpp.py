@@ -1,7 +1,7 @@
 DPP_DATA = {
-    "dpp_id": "dpp_01KTTG4PV63D5D8JB7M2VNT001",
-    "dpp_version": "2.0",
-    "issued_date": "2026-05-21",
+    "dpp_id": "dpp_01KS8B0BA3JABFACW0ESR17T6V",
+    "dpp_version": "2.1",
+    "issued_date": "2026-05-22",
     "passport_url": "https://abdullahigoni-droid.github.io/DPP/{dpp_id}",
 
     "product": {
